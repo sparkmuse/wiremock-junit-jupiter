@@ -18,10 +18,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(WiremockExtension.class)
-public class InstantiatedServerTest {
+class InstantiatedServerTest {
 
     @Wiremock
-    private WireMockServer postsServer = new WireMockServer(9000);
+    private final WireMockServer postsServer = new WireMockServer(9000);
 
     @Test
     @DisplayName("uses values from instance wiremock server")

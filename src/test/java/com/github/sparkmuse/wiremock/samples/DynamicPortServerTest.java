@@ -18,7 +18,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(WiremockExtension.class)
-public class DynamicPortServerTest {
+class DynamicPortServerTest {
 
     @Wiremock(port = Wiremock.DYNAMIC_PORT)
     private WireMockServer server;

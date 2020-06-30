@@ -18,7 +18,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(WiremockExtension.class)
-public class SimpleServerTest {
+class SimpleServerTest {
 
     @Wiremock
     private WireMockServer server;

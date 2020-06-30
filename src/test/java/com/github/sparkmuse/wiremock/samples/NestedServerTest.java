@@ -19,7 +19,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(WiremockExtension.class)
-public class NestedServerTest {
+class NestedServerTest {
 
     @Wiremock(port = 9000)
     private WireMockServer parentSever;
