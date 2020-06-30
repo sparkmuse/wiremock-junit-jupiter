@@ -129,7 +129,7 @@
                 <sonar.organization>sparkmuse-github</sonar.organization>
                 <sonar.exclusions>
                 </sonar.exclusions>
-                <sonar.projectKey>swagger2</sonar.projectKey>
+                <sonar.projectKey>wiremock-junit-jupiter</sonar.projectKey>
                 <sonar.java.source>11</sonar.java.source>
             </properties>
         </profile>
