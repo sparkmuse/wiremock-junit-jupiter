@@ -78,14 +78,14 @@ public class MultipleServerTest {
 ```
 
 ### Customize it your way
-If the simple options that come with the  @Wiremock annotation feel free to add your own configuration options. The instance will be managed automatically
+If the simple options that come with the  @Wiremock annotation feel free to add your own configuration options. The instance will be managed automatically.
 
 ```java
 @ExtendWith(WiremockExtension.class)
 public class InstantiatedOptionsServerTest {
 
     @Wiremock
-    private WireMockServer postsServer = new WireMockServer(
+    private final WireMockServer postsServer = new WireMockServer(
             WireMockConfiguration.options()
                     .port(9000)
                     .containerThreads(20));
@@ -97,3 +97,57 @@ public class InstantiatedOptionsServerTest {
     }
 }
 ```
+
+### Nested
+
+It supports nested tests.
+
+```java
+@ExtendWith(WiremockExtension.class)
+class NestedServerTest {
+
+    @Wiremock(port = 9000)
+    private WireMockServer parentSever;
+
+    @Test
+    @DisplayName("some other top level test")
+    void posts() {
+        // some other test
+    }
+
+    @Nested
+    class NestedClass {
+
+        @Wiremock(port = 5000)
+        private WireMockServer nestedServer;
+
+        @Test
+        @DisplayName("uses parent and nested wiremock server")
+        void posts() throws Exception {
+
+            parentSever.stubFor(get(urlEqualTo("/parent")).willReturn(aResponse().withStatus(200)));
+            nestedServer.stubFor(get(urlEqualTo("/nested")).willReturn(aResponse().withStatus(200)));
+
+            HttpClient client = HttpClient.newBuilder().build();
+
+            HttpResponse<String> parentResponse = client.send(HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:9000/parent"))
+                    .GET()
+                    .build(), HttpResponse.BodyHandlers.ofString());
+
+            HttpResponse<String> nestedResponse = client.send(HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:5000/nested"))
+                    .GET()
+                    .build(), HttpResponse.BodyHandlers.ofString());
+
+            assertThat(parentResponse.statusCode()).isEqualTo(200);
+            assertThat(nestedResponse.statusCode()).isEqualTo(200);
+        }
+    }
+}
+```
+
+### More examples
+The example above and more can be found here:
+[Wiremock junit Jupiter examples](https://github.com/sparkmuse/wiremock-junit-jupiter/tree/master/src/test/java/com/github/sparkmuse/wiremock/samples)
+
