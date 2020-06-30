@@ -50,3 +50,4 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 
 /wiremock-junit-jupiter.iml
+sonar-project.properties
