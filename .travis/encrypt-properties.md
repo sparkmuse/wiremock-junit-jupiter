@@ -12,7 +12,7 @@ travis encrypt NEXUS_PASSWORD='password-here'
 
 ### NEXUS_USERNAME
 ```shell script
-travis encrypt NEXUS_PASSWORD='user-name-here'
+travis encrypt NEXUS_USERNAME='user-name-here'
 ```
 
 ### GPG_SECRET_KEYS (set online value too large)
