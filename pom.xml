@@ -7,6 +7,29 @@
     <groupId>com.github.sparkmuse</groupId>
     <artifactId>wiremock-junit-jupiter</artifactId>
     <version>1.0.0</version>
+    <!-- versioning is handled by travis -->
+
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>Project to use Wiremock  with Junit5.</description>
+    <url>https://github.com/sparkmuse/wiremock-junit-jupiter</url>
+
+    <developers>
+        <developer>
+            <name>Alfredo Lopez</name>
+            <email>alfredo.lopez.de@gmail.com</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>https://github.com/sparkmuse/wiremock-junit-jupiter</url>
+        <connection>https://github.com/sparkmuse/wiremock-junit-jupiter.git</connection>
+        <developerConnection>git@github.com:sparkmuse/wiremock-junit-jupiter.git</developerConnection>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/sparkmuse/wiremock-junit-jupiter/issues</url>
+    </issueManagement>
 
     <properties>
         <java.version>11</java.version>
@@ -177,4 +200,23 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+    <licenses>
+        <license>
+            <name>UNLICENSE</name>
+            <url>http://unlicense.org/</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 </project>

@@ -5,8 +5,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=wiremock-junit-jupiter&metric=coverage)](https://sonarcloud.io/dashboard?id=wiremock-junit-jupiter)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.sparkmuse/wiremock-junit-jupiter.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.sparkmuse/wiremock-junit-jupiter)
 
-Project user Wiremock servers with Junit5.
-
+Project to use Wiremock  with Junit5.
 
 ## Install
 
