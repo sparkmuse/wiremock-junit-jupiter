@@ -18,23 +18,23 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(WiremockExtension.class)
-public class DynamicPortServerTest {
+public class SimpleServerTest {
 
-    @Wiremock(port = Wiremock.DYNAMIC_PORT)
+    @Wiremock
     private WireMockServer server;
 
     @Test
-    @DisplayName("uses values from instance wiremock server")
+    @DisplayName("simple test")
     void posts() throws Exception {
 
         server.stubFor(get(urlEqualTo("/posts")).willReturn(aResponse().withStatus(200)));
 
         HttpClient client = HttpClient.newBuilder().build();
-        HttpResponse<String> response = client.send(HttpRequest.newBuilder()
-                .uri(URI.create(server.baseUrl() + "/posts"))
+        HttpResponse<String> postsResponse = client.send(HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/posts"))
                 .GET()
                 .build(), HttpResponse.BodyHandlers.ofString());
 
-        assertThat(response.statusCode()).isEqualTo(200);
+        assertThat(postsResponse.statusCode()).isEqualTo(200);
     }
 }
