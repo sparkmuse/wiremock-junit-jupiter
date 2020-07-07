@@ -7,13 +7,14 @@ import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.TestInstancePostProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
@@ -24,9 +25,7 @@ import static org.junit.platform.commons.util.AnnotationUtils.findAnnotatedField
  */
 public class WiremockExtension implements AfterAllCallback, TestInstancePostProcessor, AfterEachCallback {
 
-    private static final Namespace NAMESPACE = Namespace.create("wiremock");
-
-    private final Map<String, WireMockServer> servers = new HashMap<>();
+    private static final Logger LOG = LoggerFactory.getLogger(WiremockExtension.class);
 
     /**
      * Stops all wiremock sever instances
@@ -35,13 +34,18 @@ public class WiremockExtension implements AfterAllCallback, TestInstancePostProc
      */
     @Override
     public void afterAll(ExtensionContext extensionContext) {
-        servers.values().forEach(WireMockServer::stop);
+        List<Field> serverFields = retrieveAnnotatedFields(extensionContext, Wiremock.class, WireMockServer.class);
+        ExtensionContext.Store store = getStore(extensionContext);
+
+        serverFields.stream()
+                .map(field -> store.get(field.getName(), WireMockServer.class))
+                .forEach(WireMockServer::stop);
     }
 
     /**
      * Instantiates the wiremock server instances an manages them
      *
-     * @param testObject test instance
+     * @param testObject       test instance
      * @param extensionContext text context
      * @throws IllegalAccessException when cannot access field in test
      */
@@ -49,17 +53,17 @@ public class WiremockExtension implements AfterAllCallback, TestInstancePostProc
     public void postProcessTestInstance(Object testObject, ExtensionContext extensionContext) throws IllegalAccessException {
 
         List<Field> serverFields = retrieveAnnotatedFields(extensionContext, Wiremock.class, WireMockServer.class);
+        ExtensionContext.Store store = getStore(extensionContext);
 
         for (Field field : serverFields) {
-
             field.setAccessible(true);
 
-            if (field.get(testObject) != null && !servers.containsKey(field.getName())) {
-                servers.put(field.getName(), (WireMockServer) field.get(testObject));
-            }
+            Function<String, WireMockServer> function =
+                    getWiremockField(field, testObject) == null ?
+                            key -> buildWiremockAnnotatedField(field) :
+                            key -> getWiremockField(field, testObject);
 
-            WireMockServer server = servers.computeIfAbsent(field.getName(), key -> buildAnnotatedServer(field));
-
+            WireMockServer server = store.getOrComputeIfAbsent(field.getName(), function, WireMockServer.class);
             server.start();
             field.set(testObject, server);
         }
@@ -67,11 +71,17 @@ public class WiremockExtension implements AfterAllCallback, TestInstancePostProc
 
     /**
      * Reset stubs after each test to isolate the test
+     *
      * @param extensionContext text context
      */
     @Override
     public void afterEach(ExtensionContext extensionContext) {
-        servers.values().forEach(WireMockServer::resetAll);
+        List<Field> serverFields = retrieveAnnotatedFields(extensionContext.getRoot(), Wiremock.class, WireMockServer.class);
+        ExtensionContext.Store store = getStore(extensionContext);
+
+        serverFields.stream()
+                .map(field -> store.get(field.getName(), WireMockServer.class))
+                .forEach(WireMockServer::resetAll);
     }
 
     /**
@@ -80,7 +90,7 @@ public class WiremockExtension implements AfterAllCallback, TestInstancePostProc
      * @param field annotated field
      * @return configured server
      */
-    private static WireMockServer buildAnnotatedServer(Field field) {
+    private static WireMockServer buildWiremockAnnotatedField(Field field) {
         Wiremock annotation = field.getAnnotation(Wiremock.class);
         Options options = options()
                 .port(annotation.port())
@@ -91,9 +101,9 @@ public class WiremockExtension implements AfterAllCallback, TestInstancePostProc
     /**
      * Helper method to get all annotated fields
      *
-     * @param context test context
+     * @param context        test context
      * @param annotationType type of the annotation
-     * @param fieldType type of the field
+     * @param fieldType      type of the field
      * @return a list of fields found
      */
     private static List<Field> retrieveAnnotatedFields(ExtensionContext context,
@@ -107,10 +117,37 @@ public class WiremockExtension implements AfterAllCallback, TestInstancePostProc
 
     /**
      * Check if field is assignable
+     *
      * @param fieldType type of the field
      * @return true/false
      */
     private static Predicate<Field> getFieldPredicate(Class<?> fieldType) {
         return field -> fieldType.isAssignableFrom(field.getType());
+    }
+
+    /**
+     * Get access to the store
+     *
+     * @param context the context
+     * @return the store associated to the context
+     */
+    private static ExtensionContext.Store getStore(ExtensionContext context) {
+        return context.getStore(Namespace.create(WiremockExtension.class, context.getUniqueId()));
+    }
+
+    /**
+     * Gets the value from a field
+     *
+     * @param field      The field with the value
+     * @param testObject the test object with the field
+     * @return A wiremock instance
+     */
+    private static WireMockServer getWiremockField(Field field, Object testObject) {
+        try {
+            return (WireMockServer) field.get(testObject);
+        } catch (IllegalAccessException e) {
+            LOG.error("Cannot access field.");
+        }
+        return null;
     }
 }
