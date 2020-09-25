@@ -22,7 +22,7 @@ All needed to start using the project is to add the dependency to the POM and th
 or to gradle
 
 ```groovy
-compile 'com.github.sparkmuse:properties-mapper:${version}'
+compile 'com.github.sparkmuse:wiremock-junit-jupiter:${version}'
 ```
 
 ## Usage
