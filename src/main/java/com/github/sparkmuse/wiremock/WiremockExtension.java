@@ -76,8 +76,11 @@ public class WiremockExtension implements AfterAllCallback, TestInstancePostProc
      */
     @Override
     public void afterEach(ExtensionContext extensionContext) {
-        List<Field> serverFields = retrieveAnnotatedFields(extensionContext.getRoot(), Wiremock.class, WireMockServer.class);
-        ExtensionContext.Store store = getStore(extensionContext);
+        // because we are in afterEach, ExtensionContext actually is a MethodExtensionContext which always has non-empty parent
+        @SuppressWarnings("OptionalGetWithoutIsPresent")
+        ExtensionContext classContext = extensionContext.getParent().get();
+        List<Field> serverFields = retrieveAnnotatedFields(classContext, Wiremock.class, WireMockServer.class);
+        ExtensionContext.Store store = getStore(classContext);
 
         serverFields.stream()
                 .map(field -> store.get(field.getName(), WireMockServer.class))
