@@ -22,7 +22,7 @@ jobs:
         uses: samuelmeuli/action-maven-publish@v1.4.0
         with:
           maven_profiles: release
-          maven_goals_phases: clean dokka:javadocJar deploy
+          maven_goals_phases: clean deploy
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg_passphrase: ${{ secrets.GPG_PASSPHRASE }}
           nexus_username: ${{ secrets.NEXUS_USERNAME }}
