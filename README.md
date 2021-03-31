@@ -1,6 +1,6 @@
 
 # Wiremock Junit Jupiter
-[![Build Status](https://travis-ci.org/sparkmuse/wiremock-junit-jupiter.svg?branch=master)](https://travis-ci.org/sparkmuse/wiremock-junit-jupiter)
+![Build](https://github.com/sparkmuse/wiremock-junit-jupiter/workflows/Build/badge.svg)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=wiremock-junit-jupiter&metric=alert_status)](https://sonarcloud.io/dashboard?id=wiremock-junit-jupiter)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=wiremock-junit-jupiter&metric=coverage)](https://sonarcloud.io/dashboard?id=wiremock-junit-jupiter)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.sparkmuse/wiremock-junit-jupiter.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.sparkmuse/wiremock-junit-jupiter)
