@@ -1,0 +1,29 @@
+name: Publish Maven Package
+
+on:
+  release:
+    types: [ created ]
+
+jobs:
+  release:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Install Java and Maven
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Action Maven Publish
+        uses: samuelmeuli/action-maven-publish@v1.4.0
+        with:
+          maven_profiles: release
+          maven_goals_phases: clean dokka:javadocJar deploy
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg_passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          nexus_username: ${{ secrets.NEXUS_USERNAME }}
+          nexus_password: ${{ secrets.NEXUS_PASSWORD }}
