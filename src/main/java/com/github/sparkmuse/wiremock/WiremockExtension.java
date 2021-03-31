@@ -14,6 +14,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -76,15 +77,41 @@ public class WiremockExtension implements AfterAllCallback, TestInstancePostProc
      */
     @Override
     public void afterEach(ExtensionContext extensionContext) {
-        // because we are in afterEach, ExtensionContext actually is a MethodExtensionContext which always has non-empty parent
-        @SuppressWarnings("OptionalGetWithoutIsPresent")
-        ExtensionContext classContext = extensionContext.getParent().get();
+
+        ExtensionContext classContext = getClassContext(extensionContext);
         List<Field> serverFields = retrieveAnnotatedFields(classContext, Wiremock.class, WireMockServer.class);
         ExtensionContext.Store store = getStore(classContext);
 
         serverFields.stream()
                 .map(field -> store.get(field.getName(), WireMockServer.class))
                 .forEach(WireMockServer::resetAll);
+    }
+
+
+    /**
+     * Helper method to determine the class from the context. This could use some
+     * refactoring.
+     * @param extensionContext A context that could be any of this:
+     *                          MethodExtensionContext, TestTemplateExtensionContext,
+     *                          ClassExtensionContext, JupiterEngineExtensionContext
+     *
+     * @return
+     */
+    private ExtensionContext getClassContext(ExtensionContext extensionContext) {
+
+        Optional<ExtensionContext> parent = extensionContext.getParent();
+        if (parent.isPresent()) {
+            if (parent.get().getClass().getName().endsWith("ClassExtensionContext")) {
+                return parent.get();
+            }
+
+            Optional<ExtensionContext> grandParent = parent.get().getParent();
+            if (grandParent.isPresent()) {
+                return grandParent.get();
+            }
+        }
+
+        return extensionContext;
     }
 
     /**
