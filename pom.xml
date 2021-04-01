@@ -150,7 +150,7 @@
                 <sonar.organization>sparkmuse-github</sonar.organization>
                 <sonar.exclusions>
                 </sonar.exclusions>
-                <sonar.projectKey>${project.artifactId}</sonar.projectKey>
+                <sonar.projectKey>sparkmuse_wiremock-junit-jupiter</sonar.projectKey>
                 <sonar.java.source>11</sonar.java.source>
             </properties>
         </profile>
