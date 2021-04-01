@@ -1,8 +1,8 @@
 
 # Wiremock Junit Jupiter
 ![Build](https://github.com/sparkmuse/wiremock-junit-jupiter/workflows/Build/badge.svg)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=wiremock-junit-jupiter&metric=alert_status)](https://sonarcloud.io/dashboard?id=wiremock-junit-jupiter)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=wiremock-junit-jupiter&metric=coverage)](https://sonarcloud.io/dashboard?id=wiremock-junit-jupiter)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sparkmuse_wiremock-junit-jupiter&metric=alert_status)](https://sonarcloud.io/dashboard?id=sparkmuse_wiremock-junit-jupiter)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=sparkmuse_wiremock-junit-jupiter&metric=coverage)](https://sonarcloud.io/dashboard?id=sparkmuse_wiremock-junit-jupiter)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.sparkmuse/wiremock-junit-jupiter.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.sparkmuse/wiremock-junit-jupiter)
 
 Project to use Wiremock  with Junit5.
