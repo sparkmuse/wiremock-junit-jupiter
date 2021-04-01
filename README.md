@@ -50,7 +50,7 @@ public class SimpleServerTest {
                 .GET()
                 .build(), HttpResponse.BodyHandlers.ofString());
 
-        assertThat(postsResponse.statusCode()).isEqualTo(200);
+        assertEquals(200, postsResponse.statusCode());
     }
 }
 ```
@@ -139,8 +139,8 @@ class NestedServerTest {
                     .GET()
                     .build(), HttpResponse.BodyHandlers.ofString());
 
-            assertThat(parentResponse.statusCode()).isEqualTo(200);
-            assertThat(nestedResponse.statusCode()).isEqualTo(200);
+            assertEquals(200, parentResponse.statusCode());
+            assertEquals(200, nestedResponse.statusCode());
         }
     }
 }
