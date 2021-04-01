@@ -14,7 +14,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(WiremockExtension.class)
 class ParameterizedServerTest {
@@ -35,6 +35,6 @@ class ParameterizedServerTest {
                 .GET()
                 .build(), HttpResponse.BodyHandlers.ofString());
 
-        assertThat(postsResponse.statusCode()).isEqualTo(200);
+        assertEquals(200, postsResponse.statusCode());
     }
 }

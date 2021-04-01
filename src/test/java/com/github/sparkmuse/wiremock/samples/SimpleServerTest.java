@@ -12,10 +12,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(WiremockExtension.class)
 class SimpleServerTest {
@@ -35,6 +33,6 @@ class SimpleServerTest {
                 .GET()
                 .build(), HttpResponse.BodyHandlers.ofString());
 
-        assertThat(postsResponse.statusCode()).isEqualTo(200);
+        assertEquals(200, postsResponse.statusCode());
     }
 }

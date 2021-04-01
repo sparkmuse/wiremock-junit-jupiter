@@ -37,7 +37,6 @@
 
         <junit-jupiter.version>5.7.1</junit-jupiter.version>
         <wiremock-.version>2.26.3</wiremock-.version>
-        <assertj.version>3.16.1</assertj.version>
         <slf4j-simple.version>1.7.30</slf4j-simple.version>
     </properties>
 
@@ -62,12 +61,6 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${junit-jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

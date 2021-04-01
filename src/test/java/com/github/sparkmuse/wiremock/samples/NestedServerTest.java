@@ -13,10 +13,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(WiremockExtension.class)
 class NestedServerTest {
@@ -36,7 +34,7 @@ class NestedServerTest {
                 .GET()
                 .build(), HttpResponse.BodyHandlers.ofString());
 
-        assertThat(response.statusCode()).isEqualTo(200);
+        assertEquals(200, response.statusCode());
     }
 
     @Nested
@@ -64,8 +62,8 @@ class NestedServerTest {
                     .GET()
                     .build(), HttpResponse.BodyHandlers.ofString());
 
-            assertThat(parentResponse.statusCode()).isEqualTo(200);
-            assertThat(nestedResponse.statusCode()).isEqualTo(200);
+            assertEquals(200, parentResponse.statusCode());
+            assertEquals(200, nestedResponse.statusCode());
         }
     }
 }
