@@ -7,7 +7,6 @@
     <groupId>com.github.sparkmuse</groupId>
     <artifactId>wiremock-junit-jupiter</artifactId>
     <version>1.3.5</version>
-    <!-- versioning is handled by travis -->
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Project to use Wiremock  with Junit5.</description>
